@@ -14,7 +14,6 @@ function App() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', height: '100vh' }}>
-  
       <div ref={componentRef}>
         <Header />
         <Detail />
