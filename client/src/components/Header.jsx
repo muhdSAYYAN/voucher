@@ -4,33 +4,9 @@ import { FormContext } from "../context/Context";
 
 const Header = () => {
  
-  const {handleInsertData,totalAmount} = useContext(FormContext)
+  const {handleInsertData,totalAmount,formData,setFormData,handleFormChange,handleSubmit,handleSaveData,handleRefresh} = useContext(FormContext)
 
-  const [formData, setFormData] = useState({
-    vrNo: "",
-    vrDate: "",
-    status: "",
-    acName: "",
-    acAmt: totalAmount,
-  });
-
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-
-    setFormData({
-      vrNo: "",
-      vrDate: "",
-      status: "",
-      acName: "",
-      acAmt: totalAmount,
-    });
-  };
+ 
 
 
   return (
@@ -53,7 +29,7 @@ const Header = () => {
             <div>
               <label>Vr Date :- </label>
               <input
-                type="text"
+                type="date"
                 className="inp-field"
                 name="vrDate"
                 value={formData.vrDate}
@@ -98,12 +74,7 @@ const Header = () => {
         </form>
     </div>
     
-    <div className="buttons">
-        <button className="btn">New</button>
-        <button className="btn" onClick={handleInsertData}>Insert</button>
-        <button className="btn">Save</button>
-        <button className="btn">Print</button>
-    </div>
+   
 </>
   );
 };

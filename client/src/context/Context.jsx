@@ -1,4 +1,5 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
+import axios from "axios"
 
 export const FormContext = createContext();
 
@@ -12,6 +13,12 @@ const Context = ({ children }) => {
     rate: '',
     amount: '',
   });
+
+  const totalAmount = tableData.reduce((acc, row) => acc + parseFloat(row.amount || 0), 0).toFixed(2);
+const [amt,setAmt] = useState(0)
+useEffect(()=>{
+  setAmt(totalAmount)
+},[totalAmount])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -46,11 +53,85 @@ const Context = ({ children }) => {
     });
   };
 
-  const totalAmount = tableData.reduce((acc, row) => acc + parseFloat(row.amount || 0), 0).toFixed(2);
+
+  const [formData, setFormData] = useState({
+    vrNo:"",
+    vrDate: "",
+    status: "",
+    acName: "",
+    acAmt: amt,
+  });
+  
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      acAmt: amt, 
+    }));
+  }, [amt]);
+
+
+  console.log('tamt',totalAmount)
+  console.log('amt',amt)
+
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+
+    setFormData({
+      vrNo:"",
+      vrDate: "",
+      status: "",
+      acName: "",
+      acAmt: "",
+    });
+  };
+
+  console.log(formData)
+  console.log(tableData)
+
+  // const [voucher,setVoucher] = useState({
+  //   tableDt: tableData,
+  //   formdt:formData
+  // })
+
+
+  // const data = async()=>{
+  //   await axios.post("http://localhost:3500/postFormData", {formData,tableData});
+    
+
+  // }
+
+  const handleSaveData = async () => {
+    try{
+  //  data()
+   await axios.post("http://localhost:3500/postFormData", {formData,tableData});
+      
+    }catch(err){
+      console.log(err)
+    }
+  };
+
+
+  const handleRefresh =()=>{
+    setFormData({
+      vrNo:"",
+      vrDate: "",
+      status: "",
+      acName: "",
+      acAmt: "",
+    });
+    setTableData([]);
+  }
 
 
   return (
-    <FormContext.Provider value={{ tableData, handleInsertData, handleInputChange, newRowData, setNewRowData, totalAmount }}>
+    <FormContext.Provider value={{ tableData, handleInsertData, handleInputChange, newRowData, setNewRowData, totalAmount ,formData,setFormData,handleFormChange,handleSubmit,handleSaveData,handleRefresh}}>
       {children}
     </FormContext.Provider>
   );

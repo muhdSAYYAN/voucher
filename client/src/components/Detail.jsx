@@ -25,7 +25,7 @@ const Detail = () => {
           <tbody>
             {tableData.map((row, index) => (
               <tr key={index}>
-                <td>{row.srNo}</td>
+                <td>{index+1}</td>
                 <td>{row.itemCode}</td>
                 <td>{row.itemName}</td>
                 <td>{row.qty}</td>
@@ -35,13 +35,14 @@ const Detail = () => {
             ))}
             <tr>
               <td>
-                <input
+                {/* <input
                   className='table-input'
                   type="text"
                   name="srNo"
                   value={newRowData.srNo}
                   onChange={handleInputChange}
-                />
+                /> */}
+                <span>{tableData.length+1}</span>
               </td>
               <td>
                 <input
